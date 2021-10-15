@@ -122,20 +122,15 @@ if __name__=="__main__":
         elif decision==2:
             print("Ingrese la ruta de su archivo de Texto:\n")
             ruta=str(input())
-            f = open (ruta,'r', encoding='utf-8')
+            f = open (ruta,'r', encoding='latin-1')
             mensaje = f.readlines()
             for i in mensaje:
-                if mensaje!='':
-                    print('Mensaje:'+str(i)+'\nHasheando:')
-                    aux=HashBrianNasheeeeeeeeee(str(i))
-                    largo=len(aux)
-                    if largo<25:
-                        for i in range(largo,25):
-                            aux=aux+'a'
-                    print(aux+', largo'+str(len(aux)))
-                    print('\n')
-                
-                
+                aux=HashBrianNasheeeeeeeeee(str(i))
+                largo=len(aux)
+                if largo<25:
+                    for i in range(largo,25):
+                        aux=aux+'a'
+                print(aux)
             f.close()
         elif decision==3:
             print("Ingrese la cadena de Texto:\n")
