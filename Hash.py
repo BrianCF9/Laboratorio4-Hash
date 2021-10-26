@@ -168,7 +168,7 @@ if __name__=="__main__":
                 if mensaje!='':
                     lista2=list()
                     aux=HashBrianNasheeeeeeeeee(i)
-                    print('HashBrian: '+aux+', entropy: '+str(Entropia(i)))
+                    print('HashBrian: '+aux+', entropy: '+str(Entropia(aux)))
                     sha1 = hashlib.new("sha1", bytes(i, encoding = "utf-8"))
                     sha1e=Entropia(sha1.hexdigest())
                     print('SHA1: '+sha1.hexdigest()+', entropy: '+str(sha1e))
