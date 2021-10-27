@@ -1,4 +1,5 @@
 
+#librerías necesarias
 import requests
 import time
 from datetime import date, datetime
@@ -8,7 +9,7 @@ import hashlib
 import csv
 
 
-
+#función para obtener el valor de uf  a día de hoy en chile
 def ValorUF():
     valor='uf'
     fecha=date.today()
@@ -33,85 +34,63 @@ def ValorUF():
     
     return data['serie'][0]['valor']
 
+
+
+
+#función de hashing
 def HashBrianNasheeeeeeeeee(palabra):
+    #defino variables de temporalidad y listas donde guardar información
     time=datetime.now()
     uf=int(ValorUF())
+    #empiezo a construir el hash
     cadena=''
-    
+    #agrego el valor de la uf hoy
     cadena=cadena+str(uf)
-
-
-
     largo=len(palabra)
-
     ascii_values=list()
     values=list()
+    #recorro la palabra de entrada y tomo cada uno de los carácteres para meterlo en una lista, y en otra con sus valores ascii
     for character in palabra:
         values.append(character)
         ascii_values.append(ord(character))
-        
+    #según variables de decisión voy agreganco cosas al hash 
     if str(values[0])=='\n':
         cadena=cadena+str('a')
     else:
         cadena=cadena+str(values[0])
-
     cadena=cadena+str(int((ascii_values[int(largo/2)])/2))
-
-
     if str(values[int(largo/2)])=='\n':
         cadena=cadena+str('e')
     else:
         cadena=cadena+str(values[int(largo/2)])
-        
-    
-    
-
+    #agrego variables de temporalidad año y día
     cadena=cadena+str(time.year)
     cadena=cadena+str(time.day)
-
-
+    #según variables de decisión voy agreganco cosas al hash 
     if str(values[largo-1])=='\n':
         cadena=cadena+str('i')
     else:
         cadena=cadena+str(values[largo-1])
-    
-
-
-    
+    #agrego variables de temporalidad mes, hora y minuto 
     cadena=cadena+str(time.month)
     cadena=cadena+str(int((time.hour)/10))
     cadena=cadena+str(int((time.minute)/10))
-
-
     if str(values[int(largo/4)])=='\n':
         cadena=cadena+str('o')
     else:
         cadena=cadena+str(values[int(largo/4)])
-    
-
-
-
-
+    #agrego variables de temporalidad segundos
     cadena=cadena+str(int(((ascii_values[int(largo/2)])/2+(ascii_values[largo-1])/10)))
     cadena=cadena+str(time.second+10)
-    
-    
-    
-
     return cadena
-    
-
-
+#formula para calcular la entropía
 def Entropia(cadena):
     largo=len(cadena)
     #base ascii 128 caracteres
     base=128
     entropia=largo*math.log(base,2)
     return entropia
-
-
-
-
+#menú de opciones 
 if __name__=="__main__":
     decision=0
     while decision!=6:
@@ -144,8 +123,9 @@ if __name__=="__main__":
         elif decision==3:
             print("Ingrese la cadena de Texto:\n")
             cadena=str(input())
-            aux=Entropia(cadena)
-            print('La entropia es: '+str(aux)+'\n')
+            aux=HashBrianNasheeeeeeeeee(cadena)
+            aux1=Entropia(aux)
+            print('Hash:'+aux+', largo:'+str(len(aux))+', La entropia es: '+str(aux1)+'\n')
         elif decision==4:
             print("Ingrese la ruta de su archivo de Texto:\n")
             ruta=str(input())
@@ -154,12 +134,16 @@ if __name__=="__main__":
             lista=list()
             encabezado=list()
             encabezado.append('Cadena')
+            encabezado.append('')
             encabezado.append('HashBrian')
             encabezado.append('Entropy')
+            encabezado.append('')
             encabezado.append('SHA1')
             encabezado.append('Entropy')
+            encabezado.append('')
             encabezado.append('SHA256')
             encabezado.append('Entropy')
+            encabezado.append('')
             encabezado.append('MD5')
             encabezado.append('Entropy')
             lista.append(encabezado)
@@ -180,17 +164,21 @@ if __name__=="__main__":
                     print('MD5: '+md5.hexdigest()+', entropy: '+str(md5e))
                     print('\n')
                     lista2.append(i)
+                    lista2.append('')
                     lista2.append(aux)
-                    lista2.append(str(Entropia(i)))
+                    lista2.append(str(Entropia(aux)))
+                    lista2.append('')
                     lista2.append(sha1.hexdigest())
                     lista2.append(sha1e)
+                    lista2.append('')
                     lista2.append(sha256.hexdigest())
                     lista2.append(sha256e)
+                    lista2.append('')
                     lista2.append(md5.hexdigest())
                     lista2.append(md5e)
                     lista.append(lista2)
             
-            with open('comparacion.csv', 'w',encoding='utf-8',newline='') as file:
+            with open('comparacionentropia.csv', 'w',encoding='utf-8',newline='') as file:
                 writer = csv.writer(file, delimiter=';')
                 writer.writerows(lista)
         
@@ -217,7 +205,7 @@ if __name__=="__main__":
             lista2=list()
             lista2.append('HashBrian')
             lista2.append(contador)
-            lista2.append(str(round(time2-time1,2)).replace('.',','))
+            lista2.append(str((time2-time1)).replace('.',','))
             lista.append(lista2)
 
             contador=0
@@ -230,7 +218,7 @@ if __name__=="__main__":
             lista2=list()
             lista2.append('SHA1')
             lista2.append(contador)
-            lista2.append(str(round(time2-time1,2)).replace('.',','))
+            lista2.append(str((time2-time1)).replace('.',','))
             lista.append(lista2)
 
             contador=0
@@ -243,7 +231,7 @@ if __name__=="__main__":
             lista2=list()
             lista2.append('SHA256')
             lista2.append(contador)
-            lista2.append(str(round(time2-time1,2)).replace('.',','))
+            lista2.append(str((time2-time1)).replace('.',','))
             lista.append(lista2)
 
             contador=0
@@ -256,7 +244,7 @@ if __name__=="__main__":
             lista2=list()
             lista2.append('MD5')
             lista2.append(contador)
-            lista2.append(str(round(time2-time1,2)).replace('.',','))
+            lista2.append(str((time2-time1)).replace('.',','))
             lista.append(lista2)
 
 
